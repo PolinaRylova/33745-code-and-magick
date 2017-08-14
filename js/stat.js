@@ -11,7 +11,7 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.stroke();
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'; // Цвет тени
   ctx.fill();
-  ctx.beginPath();
+  ctx.beginPath(); // Рисуем фигуру облака
   ctx.strokeStyle = 'rgb(0, 0, 139)'; // Цвет контура облака
   ctx.moveTo(180,10);
   ctx.quadraticCurveTo(45,20,95,115);
@@ -41,18 +41,16 @@ window.renderStatistics = function (ctx, names, times) {
   var indent = 50;
   var initialX = 120;
   var initialY = 100;
-  // var colorSaturation = [];
   ctx.textBaseline = 'top';
   for (var j = 0; j < times.length; j++) {
     if (names[j] === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     } else {
-      // colorSaturation[j] = Math.random().toFixed(1);
-      ctx.fillStyle = 'rgba(0, 0, 255, Math.random().toFixed(0))';
+      var colorSaturation = Math.random().toFixed(1);
+      ctx.fillStyle = 'rgba(0, 0, 255, ' + colorSaturation + ' )';
     }
     ctx.fillRect(initialX + (indent + barWidth) * j, initialY + (histogramHeight - times[j] * step), barWidth, times[j] * step);
     ctx.fillText(names[j], initialX + (indent + barWidth) * j, initialY + histogramHeight ); // Подпись с именем игрока
     ctx.fillText(times[j].toFixed(0), initialX + (indent + barWidth) * j, initialY + (histogramHeight - times[j] * step) - 20); // Подпись с результатом игрока
   }
 };
-// Починить случайно задаваемую насыщенность колонок (не работает насыщенность и заливает красным не только игрока "Вы")
