@@ -42,6 +42,7 @@ var findMaxTime = function (times) {
       maxTime = time;
     }
   }
+  return maxTime;
 };
 
 var findRandomSaturation = function () {
@@ -62,9 +63,11 @@ var drawStatisticHistogram = function (ctx, names, times) {
     } else {
       ctx.fillStyle = 'rgba(0, 0, 255, ' + findRandomSaturation() + ' )';
     }
-    ctx.fillRect(initialX + (indent + barWidth) * j, initialY + (histogramHeight - times[j] * step), barWidth, times[j] * step);
-    ctx.fillText(names[j], initialX + (indent + barWidth) * j, initialY + histogramHeight); // Подпись с именем игрока
-    ctx.fillText(times[j].toFixed(0), initialX + (indent + barWidth) * j, initialY + (histogramHeight - times[j] * step) - 20); // Подпись с результатом игрока
+    var columnPointX = initialX + (indent + barWidth) * j;
+    var columnPointY = initialY + (histogramHeight - times[j] * step);
+    ctx.fillText(times[j].toFixed(0), columnPointX, columnPointY - 20); // Подпись с результатом игрока
+    ctx.fillRect(columnPointX, columnPointY, barWidth, times[j] * step);
+    ctx.fillText(names[j], columnPointX, initialY + histogramHeight); // Подпись с именем игрока
   }
 };
 
