@@ -9,7 +9,9 @@ var similarListElement = userDialog.querySelector('.setup-similar-list'); // Н�
 
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content; // Нахожу контент шаблона волшебника
 
-// var WIZARDS_NAMES = [];
+var WIZARDS_NAMES = ['Ами', 'Рэй', 'Макото', 'Минако'];
+
+var WIZARDS_SURNAME = ['Мицуно', 'Хино', 'Кино', 'Аино'];
 
 for (var i = 0; i < 4; i++) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
