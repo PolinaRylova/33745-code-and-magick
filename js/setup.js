@@ -67,12 +67,14 @@ setupOpen.addEventListener('keydown', function (evt) {
     openSetupBlock();
   }
 });
+/*
 setupUserName.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     evt.preventDefault();
     setupClose.focus();
   }
 });
+*/
 setupClose.addEventListener('click', function () {
   closeSetupBlock();
 });
@@ -81,13 +83,32 @@ setupClose.addEventListener('keydown', function (evt) {
     closeSetupBlock();
   }
 });
-setupSubmit.addEventListener('click', function (evt) {
-  evt.preventDefault();
+setupSubmit.addEventListener('click', function () {
   closeSetupBlock();
 });
 setupSubmit.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    evt.preventDefault();
     closeSetupBlock();
+  }
+});
+setupUserName.addEventListener('invalid', function () {
+  if (!setupUserName.validity.valid) {
+    if (setupUserName.validity.tooShort) {
+      setupUserName.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+    } else if (setupUserName.validity.tooLong) {
+      setupUserName.setCustomValidity('Имя не должно превышать 25-ти символов');
+    } else if (setupUserName.validity.valueMissing) {
+      setupUserName.setCustomValidity('Заполните поле');
+    }
+  } else {
+    setupUserName.setCustomValidity('');
+  }
+});
+setupUserName.addEventListener('input', function (evt) {
+  var target = evt.target;
+  if (target.value.length < 2) {
+    target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else {
+    target.setCustomValidity('');
   }
 });
