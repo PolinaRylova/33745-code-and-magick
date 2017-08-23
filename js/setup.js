@@ -1,6 +1,8 @@
 'use strict';
-
-// Создание массива волшебников
+// константы для клавиш
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+// константы для массива волшебников
 var WIZARDS_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var WIZARDS_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var WIZARDS_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
@@ -32,11 +34,53 @@ for (var j = 0; j < wizards.length; j++) {
   fragment.appendChild(renderWizard(wizards[j]));
 }
 // Заполнение данными из фрагмента и визуализация скрытого окна настроек со списком волшебников
-var userDialog = document.querySelector('.setup');
-var similarListElement = userDialog.querySelector('.setup-similar-list');
+var setup = document.querySelector('.setup');
+var similarListElement = setup.querySelector('.setup-similar-list');
 var drawWizardsList = function () {
   similarListElement.appendChild(fragment);
-  userDialog.classList.remove('hidden');
-  userDialog.querySelector('.setup-similar').classList.remove('hidden');
+  setup.classList.remove('hidden');
+  setup.querySelector('.setup-similar').classList.remove('hidden');
 };
 drawWizardsList();
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+var setupSubmit = setup.querySelector('.setup-submit');
+var openSetupBlock = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', escCloseSetupBlock);
+  document.addEventListener('keydown', submitCloseSetupBlock);
+};
+var closeSetupBlock = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', escCloseSetupBlock);
+  document.removeEventListener('keydown', submitCloseSetupBlock);
+};
+var escCloseSetupBlock = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeSetupBlock();
+  }
+};
+var submitCloseSetupBlock = function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeSetupBlock();
+  }
+};
+setupOpen.addEventListener('click', function () {
+  openSetupBlock();
+});
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openSetupBlock();
+  }
+});
+setupClose.addEventListener('click', function () {
+  closeSetupBlock();
+});
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeSetupBlock();
+  }
+});
+setupSubmit.addEventListener('click', function () {
+  closeSetupBlock();
+});
