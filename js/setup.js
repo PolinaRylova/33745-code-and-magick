@@ -55,43 +55,24 @@ var closeSetupBlock = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', escCloseSetupBlock);
 };
-var escCloseSetupBlock = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
+var escCloseSetupBlock = function (event) {
+  if (event.keyCode === ESC_KEYCODE) {
     closeSetupBlock();
   }
 };
 setupOpen.addEventListener('click', function () {
   openSetupBlock();
 });
-setupOpen.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
+setupOpen.addEventListener('keydown', function (event) {
+  if (event.keyCode === ENTER_KEYCODE) {
     openSetupBlock();
   }
 });
-/*
-setupUserName.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    evt.preventDefault();
-    setupClose.focus();
+setupUserName.addEventListener('keydown', function (event) {
+  if (event.keyCode === ENTER_KEYCODE) {
+    event.stopPropagation();
   }
-});
-*/
-setupClose.addEventListener('click', function () {
-  closeSetupBlock();
-});
-setupClose.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    closeSetupBlock();
-  }
-});
-setupSubmit.addEventListener('click', function () {
-  closeSetupBlock();
-});
-setupSubmit.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === ENTER_KEYCODE) {
-    closeSetupBlock();
-  }
-});
+}, true);
 setupUserName.addEventListener('invalid', function () {
   if (!setupUserName.validity.valid) {
     if (setupUserName.validity.tooShort) {
@@ -105,25 +86,33 @@ setupUserName.addEventListener('invalid', function () {
     setupUserName.setCustomValidity('');
   }
 });
-setupUserName.addEventListener('input', function (evt) {
-  var target = evt.target;
+setupUserName.addEventListener('input', function (event) {
+  var target = event.target;
   if (target.value.length < 2) {
     target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
   } else {
     target.setCustomValidity('');
   }
 });
+setupClose.addEventListener('click', function () {
+  closeSetupBlock();
+});
+setupClose.addEventListener('keydown', function (event) {
+  if (event.keyCode === ENTER_KEYCODE) {
+    closeSetupBlock();
+  }
+});
 var setupWizard = setup.querySelector('.setup-wizard');
 var setupWizardCoat = setupWizard.querySelector('.wizard-coat');
 var setupWizardEyes = setupWizard.querySelector('.wizard-eyes');
 var setupFireball = document.querySelector('.setup-fireball-wrap');
-var changeColor = function (evt) {
-  var currentStyle = evt.currentTarget.style;
-  if (evt.currentTarget === setupWizardCoat) {
+var changeColor = function (event) {
+  var currentStyle = event.currentTarget.style;
+  if (event.currentTarget === setupWizardCoat) {
     currentStyle.fill = WIZARDS_COAT_COLOR[getRandomIndex(0, WIZARDS_COAT_COLOR.length)];
-  } else if (evt.currentTarget === setupWizardEyes) {
+  } else if (event.currentTarget === setupWizardEyes) {
     currentStyle.fill = WIZARDS_EYES_COLOR[getRandomIndex(0, WIZARDS_EYES_COLOR.length)];
-  } else if (evt.currentTarget === setupFireball) {
+  } else if (event.currentTarget === setupFireball) {
     currentStyle.background = WIZARDS_FIREBALL_COLOR[getRandomIndex(0, WIZARDS_FIREBALL_COLOR.length)];
   }
 };
