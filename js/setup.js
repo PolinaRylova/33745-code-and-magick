@@ -77,9 +77,11 @@ setupUserName.addEventListener('invalid', function () {
   if (!setupUserName.validity.valid) {
     if (setupUserName.validity.tooShort) {
       setupUserName.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-    } else if (setupUserName.validity.tooLong) {
+    }
+    if (setupUserName.validity.tooLong) {
       setupUserName.setCustomValidity('Имя не должно превышать 25-ти символов');
-    } else if (setupUserName.validity.valueMissing) {
+    }
+    if (setupUserName.validity.valueMissing) {
       setupUserName.setCustomValidity('Заполните поле');
     }
   } else {
