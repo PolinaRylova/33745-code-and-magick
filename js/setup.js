@@ -68,6 +68,18 @@ setupOpen.addEventListener('keydown', function (event) {
     openSetupBlock();
   }
 });
+setupSubmit.addEventListener('click', function () {
+  if (setupUserName.validity.valid) {
+    closeSetupBlock();
+  }
+});
+setupSubmit.addEventListener('keydown', function (event) {
+  if (event.keyCode === ENTER_KEYCODE) {
+    if (setupUserName.validity.valid) {
+      closeSetupBlock();
+    }
+  }
+});
 setupUserName.addEventListener('keydown', function (event) {
   if (event.keyCode === ENTER_KEYCODE) {
     event.stopPropagation();
