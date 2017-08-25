@@ -35,58 +35,54 @@ for (var j = 0; j < wizards.length; j++) {
   fragment.appendChild(renderWizard(wizards[j]));
 }
 // Заполнение данными из фрагмента и визуализация скрытого окна настроек со списком волшебников
-var setup = document.querySelector('.setup');
-var similarListElement = setup.querySelector('.setup-similar-list');
+var userDialog = document.querySelector('.setup');
+var similarListElement = userDialog.querySelector('.setup-similar-list');
 var drawWizardsList = function () {
   similarListElement.appendChild(fragment);
-  // setup.classList.remove('hidden');
-  setup.querySelector('.setup-similar').classList.remove('hidden');
+  userDialog.querySelector('.setup-similar').classList.remove('hidden');
 };
 drawWizardsList();
 var setupOpen = document.querySelector('.setup-open');
-var setupClose = setup.querySelector('.setup-close');
-var setupSubmit = setup.querySelector('.setup-submit');
-var setupUserName = setup.querySelector('.setup-user-name');
+var setupClose = userDialog.querySelector('.setup-close');
+var setupSubmit = userDialog.querySelector('.setup-submit');
+var setupUserName = userDialog.querySelector('.setup-user-name');
+var userNameValid = setupUserName.validity.valid;
 var openSetupBlock = function () {
-  setup.classList.remove('hidden');
+  userDialog.classList.remove('hidden');
   document.addEventListener('keydown', escCloseSetupBlock);
 };
 var closeSetupBlock = function () {
-  setup.classList.add('hidden');
+  userDialog.classList.add('hidden');
   document.removeEventListener('keydown', escCloseSetupBlock);
 };
-var escCloseSetupBlock = function (event) {
-  if (event.keyCode === ESC_KEYCODE) {
+var escCloseSetupBlock = function (e) {
+  if (e.keyCode === ESC_KEYCODE) {
     closeSetupBlock();
   }
 };
 setupOpen.addEventListener('click', function () {
   openSetupBlock();
 });
-setupOpen.addEventListener('keydown', function (event) {
-  if (event.keyCode === ENTER_KEYCODE) {
+setupOpen.addEventListener('keydown', function (e) {
+  if (e.keyCode === ENTER_KEYCODE) {
     openSetupBlock();
   }
 });
 setupSubmit.addEventListener('click', function () {
-  if (setupUserName.validity.valid) {
+  if (userNameValid) {
     closeSetupBlock();
   }
 });
-setupSubmit.addEventListener('keydown', function (event) {
-  if (event.keyCode === ENTER_KEYCODE) {
-    if (setupUserName.validity.valid) {
-      closeSetupBlock();
-    }
+setupSubmit.addEventListener('keydown', function (e) {
+  if (e.keyCode === ENTER_KEYCODE && userNameValid) {
+    closeSetupBlock();
   }
 });
-setupUserName.addEventListener('keydown', function (event) {
-  if (event.keyCode === ENTER_KEYCODE) {
-    event.stopPropagation();
-  }
+setupUserName.addEventListener('keydown', function (e) {
+  e.stopPropagation();
 }, true);
 setupUserName.addEventListener('invalid', function () {
-  if (!setupUserName.validity.valid) {
+  if (!userNameValid) {
     if (setupUserName.validity.tooShort) {
       setupUserName.setCustomValidity('Имя должно состоять минимум из 2-х символов');
     }
@@ -100,8 +96,8 @@ setupUserName.addEventListener('invalid', function () {
     setupUserName.setCustomValidity('');
   }
 });
-setupUserName.addEventListener('input', function (event) {
-  var target = event.target;
+setupUserName.addEventListener('input', function (e) {
+  var target = e.target;
   if (target.value.length < 2) {
     target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
   } else {
@@ -111,22 +107,22 @@ setupUserName.addEventListener('input', function (event) {
 setupClose.addEventListener('click', function () {
   closeSetupBlock();
 });
-setupClose.addEventListener('keydown', function (event) {
-  if (event.keyCode === ENTER_KEYCODE) {
+setupClose.addEventListener('keydown', function (e) {
+  if (e.keyCode === ENTER_KEYCODE) {
     closeSetupBlock();
   }
 });
-var setupWizard = setup.querySelector('.setup-wizard');
+var setupWizard = userDialog.querySelector('.setup-wizard');
 var setupWizardCoat = setupWizard.querySelector('.wizard-coat');
 var setupWizardEyes = setupWizard.querySelector('.wizard-eyes');
 var setupFireball = document.querySelector('.setup-fireball-wrap');
-var changeColor = function (event) {
-  var currentStyle = event.currentTarget.style;
-  if (event.currentTarget === setupWizardCoat) {
+var changeColor = function (e) {
+  var currentStyle = e.currentTarget.style;
+  if (e.currentTarget === setupWizardCoat) {
     currentStyle.fill = WIZARDS_COAT_COLOR[getRandomIndex(0, WIZARDS_COAT_COLOR.length)];
-  } else if (event.currentTarget === setupWizardEyes) {
+  } else if (e.currentTarget === setupWizardEyes) {
     currentStyle.fill = WIZARDS_EYES_COLOR[getRandomIndex(0, WIZARDS_EYES_COLOR.length)];
-  } else if (event.currentTarget === setupFireball) {
+  } else if (e.currentTarget === setupFireball) {
     currentStyle.background = WIZARDS_FIREBALL_COLOR[getRandomIndex(0, WIZARDS_FIREBALL_COLOR.length)];
   }
 };
