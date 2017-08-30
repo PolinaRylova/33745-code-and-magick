@@ -43,25 +43,17 @@
     window.util.isEnterEvent(e, closeSetupBlock);
   });
   setupUserName.addEventListener('invalid', function () {
-    if (!window.validation.isValid(setupUserName)) {
-      if (setupUserName.validity.tooShort) {
-        setupUserName.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-      }
-      if (setupUserName.validity.tooLong) {
-        setupUserName.setCustomValidity('Имя не должно превышать 25-ти символов');
-      }
-      if (setupUserName.validity.valueMissing) {
-        setupUserName.setCustomValidity('Заполните поле');
-      }
-    } else {
+    if (window.validation.isValid(setupUserName, function (customValidityText) {
+      setupUserName.setCustomValidity(customValidityText);
+    })) {
       setupUserName.setCustomValidity('');
     }
   });
   setupUserName.addEventListener('input', function (e) {
     var target = e.target;
-    if (target.value.length < 2) {
-      target.setCustomValidity('Имя должно состоять минимум из 2-х символов');
-    } else {
+    if (window.validation.isValid(target, function (customValidityText) {
+      target.setCustomValidity(customValidityText);
+    })) {
       target.setCustomValidity('');
     }
   });
