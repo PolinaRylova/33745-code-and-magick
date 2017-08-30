@@ -1,3 +1,4 @@
+'use strict';
 (function () {
   var WIZARDS_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var WIZARDS_EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
@@ -5,19 +6,22 @@
   var getRandomColor = function (arr) {
     return arr[window.util.getRandomIndex(0, arr.length)];
   };
+  var hasClass = function hasClass(element, cls) {
+    return element.classList.contains(cls);
+  };
   window.colorize = function (element, changeColor) {
-    element.addEventListener('click', function () {
-      var arr;
-      switch (element) {
-        case 'wizardCoat': arr = WIZARDS_COAT_COLOR;
-          break;
-        case 'wizardEyes': arr = WIZARDS_EYES_COLOR;
-          break;
-        case 'fireball': arr = WIZARDS_FIREBALL_COLOR;
-          break;
-      }
-      var color = getRandomColor(arr);
+    var arr = [];
+    if (hasClass(element, 'wizard-coat')) {
+      arr = WIZARDS_COAT_COLOR;
+    } else if (hasClass(element, 'wizard-eyes')) {
+      arr = WIZARDS_EYES_COLOR;
+    } else if (hasClass(element, 'setup-fireball-wrap')) {
+      arr = WIZARDS_FIREBALL_COLOR;
+    }
+    var color = getRandomColor(arr);
+    if (changeColor !== null) {
       changeColor(color);
-    });
+    }
+    return color;
   };
 })();

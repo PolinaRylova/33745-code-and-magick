@@ -11,12 +11,8 @@
   for (var i = 0; i < 4; i++) {
     var wizardObject = {
       name: WIZARDS_NAMES[window.util.getRandomIndex(0, WIZARDS_NAMES.length)] + ' ' + WIZARDS_SURNAMES[window.util.getRandomIndex(0, WIZARDS_SURNAMES.length)],
-      coatColor: window.colorize(wizardCoat, function (color) {
-        wizardCoat.style.fill = color;
-      }),
-      eyesColor: window.colorize(wizardEyes, function (color) {
-        wizardEyes.style.fill = color;
-      })
+      coatColor: window.colorize(wizardCoat, null),
+      eyesColor: window.colorize(wizardEyes, null)
     };
     wizards.push(wizardObject);
   }
@@ -42,13 +38,19 @@
   };
   drawWizardsList();
   // Раскрашиваем магов
-  window.colorize(wizardCoat, function (color) {
-    wizardCoat.style.fill = color;
+  wizardCoat.addEventListener('click', function () {
+    window.colorize(wizardCoat, function (color) {
+      wizardCoat.style.fill = color;
+    });
   });
-  window.colorize(wizardEyes, function (color) {
-    wizardEyes.style.fill = color;
+  wizardEyes.addEventListener('click', function () {
+    window.colorize(wizardEyes, function (color) {
+      wizardEyes.style.fill = color;
+    });
   });
-  window.colorize(fireball, function (color) {
-    fireball.style.background = color;
+  fireball.addEventListener('click', function () {
+    window.colorize(fireball, function (color) {
+      fireball.style.background = color;
+    });
   });
 })();
