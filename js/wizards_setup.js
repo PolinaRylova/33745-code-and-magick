@@ -53,4 +53,39 @@
       fireball.style.background = color;
     });
   });
+  // Найдём элемент магазина артефактов
+  var shopElement = setupDialog.querySelector('.setup-artifacts-shop');
+  var draggedItem = null;
+  // При перетаскивании запоминаем элемент, который тянем, и сообщаем браузеру доп.инфу о перетаскиваемом объекте
+  shopElement.addEventListener('dragstart', function (e) {
+    if (e.target.tagName.toLowerCase() === 'img') {
+      draggedItem = e.target;
+      e.dataTransfer.setData('text/plain', e.target.alt);
+    }
+  });
+  // Находим элемент, в который будем перетаскивать элементы
+  var artifactsElement = document.querySelector('.setup-artifacts');
+  // Обрабатываем событие dragover и отменяем действие по умолчанию
+  artifactsElement.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    return false;
+  });
+  // Обрабатываем событие броска
+  artifactsElement.addEventListener('drop', function (e) {
+    e.target.style.outline = '';
+    e.target.appendChild(draggedItem);
+    e.preventDefault();
+  });
+  // Обрабатываем событие движения
+  shopElement.addEventListener('mousemove', function (e) {
+    // для каждого дочернего элемента в блоке artifactsElement
+    // пустым ячейкам для вкладывания задать style.outline = '2px dashed red';
+    e.preventDefault();
+  });
+  // Обрабатываем событие прекращения движения
+  shopElement.addEventListener('mouseup', function (e) {
+    // для каждого дочернего элемента в блоке artifactsElement
+    // пустым ячейкам для вкладывания очистить style.outline = '';
+    e.preventDefault();
+  });
 })();
