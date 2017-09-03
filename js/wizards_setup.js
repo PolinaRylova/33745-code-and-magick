@@ -53,4 +53,59 @@
       fireball.style.background = color;
     });
   });
+  // Найдём элемент магазина артефактов
+  var shopElement = setupDialog.querySelector('.setup-artifacts-shop');
+  var draggedItem = null;
+  // При перетаскивании запоминаем элемент, который тянем, и сообщаем браузеру доп.инфу о перетаскиваемом объекте
+  shopElement.addEventListener('dragstart', function (e) {
+    highlightIfHasChild();
+    if (e.target.tagName.toLowerCase() === 'img') {
+      draggedItem = e.target;
+      e.dataTransfer.setData('text/plain', e.target.alt);
+    }
+  });
+  // Находим родительский элемент, в дочерние ячейки которого будем перетаскивать элементы
+  var artifactsElement = document.querySelector('.setup-artifacts');
+  // И его ячейки
+  var artifactsDropCells = artifactsElement.querySelectorAll('.setup-artifacts-cell');
+  // Объявляем функцию, которая будет проходить помассиву artifactsDropCells
+  // и подсвечивать ячейки без дочернего элемента
+  var highlightIfHasChild = function () {
+    for (var ind = 0; ind < artifactsDropCells.length; ind++) {
+      var cell = artifactsDropCells[ind];
+      if (cell.children.length === 0) {
+        cell.style.outline = '2px dashed red';
+      } else {
+        cell.style.outline = '';
+      }
+    }
+  };
+  // Обьявляем функцию которая убирает подсветку у всех ячеек
+  var deleteHighlight = function () {
+    for (var ind = 0; ind < artifactsDropCells.length; ind++) {
+      artifactsDropCells[ind].style.outline = '';
+    }
+  };
+  // Обрабатываем событие dragover и отменяем действие по умолчанию
+  artifactsElement.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    return false;
+  });
+  // Обрабатываем событие броска
+  artifactsElement.addEventListener('drop', function (e) {
+    e.target.style.backgroundColor = '';
+    deleteHighlight();
+    e.target.appendChild(draggedItem);
+    e.preventDefault();
+  });
+  // Обрабатываем событие появления над элементом
+  artifactsElement.addEventListener('dragenter', function (e) {
+    e.target.style.backgroundColor = 'yellow';
+    e.preventDefault();
+  });
+  // Обрабатываем событие ухода от элемента
+  artifactsElement.addEventListener('dragleave', function (e) {
+    e.target.style.backgroundColor = '';
+    e.preventDefault();
+  });
 })();
