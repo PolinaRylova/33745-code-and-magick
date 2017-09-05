@@ -1,8 +1,6 @@
 'use strict';
 (function () {
   var WIZARDS_COUNT = 4;
-  var WIZARDS_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var WIZARDS_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
   var WIZARDS_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var WIZARDS_EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
   var WIZARDS_FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
@@ -11,41 +9,28 @@
   var wizardCoat = setupWizard.querySelector('.wizard-coat');
   var wizardEyes = setupWizard.querySelector('.wizard-eyes');
   var fireball = document.querySelector('.setup-fireball-wrap');
-  // Инициализируем пустой массив волшебников
-  var wizards = [];
-  // Инициализируем функцию по заполнению массива волшебников
-  var fillWizardsArr = function (count) {
-    for (var i = 0; i < count; i++) {
-      wizards.push({
-        name: WIZARDS_NAMES[window.util.getRandomIndex(0, WIZARDS_NAMES.length)] + ' ' + WIZARDS_SURNAMES[window.util.getRandomIndex(0, WIZARDS_SURNAMES.length)],
-        coatColor: WIZARDS_COAT_COLOR[window.util.getRandomIndex(0, WIZARDS_COAT_COLOR.length)],
-        eyesColor: WIZARDS_EYES_COLOR[window.util.getRandomIndex(0, WIZARDS_EYES_COLOR.length)]
-      });
-    }
-  };
-  // Вызываем фукцию, чтобы создать четырёх волшебников
-  fillWizardsArr(WIZARDS_COUNT);
   // Клонирование шаблона волшебника и заполнение данными из массива волшебников
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
     return wizardElement;
   };
-  // Запись данных в фрагмент
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < wizards.length; i++) {
-    fragment.appendChild(renderWizard(wizards[i]));
-  }
-  // Заполнение данными из фрагмента и визуализация скрытого окна настроек со списком волшебников
   var similarListElement = setupDialog.querySelector('.setup-similar-list');
-  var drawWizardsList = function () {
+  // Загружаем данные о волшебниках с сервера
+  var successHandler = function (wizards) {
+    // Запись данных в фрагмент
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < WIZARDS_COUNT; i++) {
+      fragment.appendChild(renderWizard(wizards[i]));
+    }
+    // Заполнение данными из фрагмента и визуализация скрытого окна настроек со списком волшебников
     similarListElement.appendChild(fragment);
     setupDialog.querySelector('.setup-similar').classList.remove('hidden');
   };
-  drawWizardsList();
+  window.backend.load(successHandler, window.util.errorHandler);
   // Раскрашиваем магов
   var fillElement = function (element, color) {
     element.style.fill = color;
