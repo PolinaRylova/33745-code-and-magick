@@ -20,7 +20,7 @@
   };
   var similarListElement = setupDialog.querySelector('.setup-similar-list');
   // Загружаем данные о волшебниках с сервера
-  var successHandler = function (wizards) {
+  var loadHandler = function (wizards) {
     // Запись данных в фрагмент
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < WIZARDS_COUNT; i++) {
@@ -30,7 +30,7 @@
     similarListElement.appendChild(fragment);
     setupDialog.querySelector('.setup-similar').classList.remove('hidden');
   };
-  window.backend.load(successHandler, window.util.errorHandler);
+  window.backend.load(loadHandler, window.util.errorHandler);
   // Раскрашиваем магов
   var fillElement = function (element, color) {
     element.style.fill = color;
