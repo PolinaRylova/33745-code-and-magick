@@ -106,4 +106,12 @@
     // Добавим обработчик события отпускания кнопки мыши
     document.addEventListener('mouseup', mouseUpHandler);
   });
+  // Отправка данных формы на сервер с помощью XMLHttpRequest
+  var form = setupDialog.querySelector('.setup-wizard-form');
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), function () {
+      setupDialog.classList.add('hidden');
+    }, window.util.errorHandler);
+    evt.preventDefault();
+  });
 })();
