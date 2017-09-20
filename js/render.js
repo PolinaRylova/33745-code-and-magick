@@ -3,12 +3,21 @@
 (function () {
   var WIZARDS_COUNT = 4;
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content;
+  var renderWizardArtifacts = function (wizard) {
+    return wizard.artifacts.map(function (it) {
+      return it.name;
+    }).join('<br>');
+  };
   var renderWizard = function (wizard) {
-    var wizardElement = similarWizardTemplate.cloneNode(true);
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
-    return wizardElement;
+    var element = similarWizardTemplate.cloneNode(true);
+    var wizardElement = element.querySelector('.wizard');
+    element.querySelector('.setup-similar-label').textContent = wizard.name;
+    element.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    element.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
+    window.popup(wizardElement, function () {
+      return renderWizardArtifacts(wizard);
+    });
+    return element;
   };
   var similar = document.querySelector('.setup-similar');
   var similarList = document.querySelector('.setup-similar-list');

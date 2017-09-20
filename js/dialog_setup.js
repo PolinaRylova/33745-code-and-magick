@@ -59,17 +59,8 @@
       target.setCustomValidity('');
     }
   });
-  // Найдём элемент для вставки аватара
-  var userAvatar = setupDialog.querySelector('input[name="avatar"]');
-  // Создадим функцию для скрытия элемента вставки аватара
-  var hideUserAvatar = function (overEvt) {
-    overEvt.preventDefault();
-    userAvatar.style.display = 'none';
-  };
-  // Добавим обработчик события при наведении на элемент вставки аватара
-  userAvatar.addEventListener('mouseover', hideUserAvatar);
   // Найдем элемент, за который будем осуществлять перетаскивание окна
-  var setupDialogHandle = setupDialog.querySelector('.setup-user-pic');
+  var setupDialogHandle = setupDialog.querySelector('.upload');
   // Добавим обработчик события зажатия кнопки мыши на элементе
   setupDialogHandle.addEventListener('mousedown', function (downEvt) {
     downEvt.preventDefault();
@@ -78,10 +69,13 @@
       x: downEvt.clientX,
       y: downEvt.clientY
     };
+    // Запоминаем в переменную, быо перетаскивание или нет
+    var dragged = false;
     var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
-      userAvatar.style.display = '';
-      // При перемещении обновляем смещение относительно первоначальной точки
+      // При перемещении устанавливаем новое значение для переменной dragged
+      // и обновляем смещение относительно первоначальной точки
+      dragged = true;
       var shift = {
         x: startCoordinates.x - moveEvt.clientX,
         y: startCoordinates.y - moveEvt.clientY
@@ -100,6 +94,16 @@
       upEvt.preventDefault();
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
+      // Если было перемещение, навешиваем обработчик события клика, который отменит действие по умолчанию
+      if (dragged) {
+        var mouseClickPreventDefault = function (e) {
+          // Отменяем открытие формы для загрузки картинки
+          e.preventDefault();
+          // Отписываемся от обработчика события клика
+          setupDialogHandle.removeEventListener('click', mouseClickPreventDefault);
+        };
+        setupDialogHandle.addEventListener('click', mouseClickPreventDefault);
+      }
     };
     // Добавим обработчик события передвижения мыши
     document.addEventListener('mousemove', mouseMoveHandler);
